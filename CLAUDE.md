@@ -47,6 +47,6 @@ Phase 2 done: profile and job-match tabs, export ZIP and `Shares.csv`/`Profile.c
 ## Open items
 
 1. Verify the Saudi fraud-reporting channels named in `skills/job-scam-check/SKILL.md` (Absher, Kollona Amn) before the public launch.
-2. Create a GitHub repo, push, and enable Pages.
+2. Repo is live at https://github.com/aactceo/rafeeq (pushed 2026-11-20). Remaining: enable Pages (Settings → Pages → Source: GitHub Actions) and confirm the first workflow run.
 3. Test with a real recent LinkedIn export ZIP. Column names for `Shares.csv`, `Profile.csv` and `Positions.csv` were written from the known export format and tested with synthetic files only; detection is header-based and tolerant.
 4. Phase 3 from the roadmap (`docs/ROADMAP.md`).
