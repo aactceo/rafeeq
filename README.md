@@ -20,14 +20,16 @@
 | الأداة | ما تفعله |
 |---|---|
 | فاحص الاحتيال الوظيفي | يقيس مؤشرات الاحتيال في رسائل التوظيف (رسوم مسبقة، واتساب، عملات رقمية، «وظائف مهام»…) على مقياس من 0 إلى 10 |
-| فاحص الخصوصية | يكشف الهوية والإقامة والجوال والآيبان والبطاقات والجواز وسطور MRZ، وينتج نسخة مُقنّعة. يطمس أجزاء الصور ويحذف بيانات EXIF |
+| فاحص الخصوصية | يكشف الهويات (السعودية والإمارات ومصر والكويت، والأرقام الوطنية الأخرى بحسب السياق)، والجوال في دول الخليج ومصر والأردن، والآيبان العربي مع رقم التحقق، والبطاقات والجواز وسطور MRZ، وينتج نسخة مُقنّعة. يطمس أجزاء الصور ويحذف بيانات EXIF |
 | مدقق المنشور | الطول من 3,000 حرف، وما يظهر قبل «…المزيد»، والوسوم، والفقرات الطويلة، والخاتمة |
 | مولّد الشرائح العربية | يحوّل النص إلى شرائح PDF عربية سليمة الاتجاه (4:5 أو 1:1) جاهزة للرفع كمستند |
-| محلل الشبكة | يقرأ `Connections.csv` من تصديرك الرسمي: النمو، والجهات، والأدوار، وأفكار عملية |
+| مراجع الملف الشخصي | يفحص العنوان المهني والنبذة والخبرات: الطول، والصيغة، والعبارات المستهلكة، والأرقام، والبيانات الحساسة. يستورد من `Profile.csv` و`Positions.csv` |
+| مطابق الوظيفة | يقارن الإعلان بسيرتك: الكلمات الموجودة والغائبة، وحالة كل متطلب، وسنوات الخبرة |
+| محلل بياناتك | يقرأ ملف ZIP التصدير الرسمي كما هو، أو `Connections.csv` و`Shares.csv`: نمو الشبكة والجهات والأدوار، وإيقاع النشر والأيام والوسوم |
 
 **التشغيل**: افتح `app/index.html` في أي متصفح، أو انشره على GitHub Pages (يوجد سير عمل جاهز في `.github/workflows`). يحتاج التطبيق إلى الإنترنت فقط لتحميل خط IBM Plex Sans Arabic من Google Fonts، ويعمل بخط النظام إن لم يتوفر.
 
-عند تشغيله داخل Claude كـ Artifact، تظهر أزرار إضافية للذكاء الاصطناعي: رأي ثانٍ في الاحتيال، والاختصار، وافتتاحية أقوى، والترجمة.
+عند تشغيله داخل Claude كـ Artifact، تظهر أزرار إضافية للذكاء الاصطناعي: رأي ثانٍ في الاحتيال، والاختصار، وافتتاحية أقوى، والترجمة، واقتراح عناوين مهنية، وخطاب التقديم، وأسئلة المقابلة.
 
 ### 2. إضافة Claude: `skills/`
 
@@ -58,7 +60,7 @@
 node tests/core.test.mjs
 ```
 
-تختبر منطق الأدوات: قواعد الاحتيال، وأنماط البيانات الحساسة مع حالات الإيجاب الكاذب، وتحليل CSV، وبنية ملف PDF.
+تختبر منطق الأدوات: قواعد الاحتيال، وأنماط البيانات الحساسة مع حالات الإيجاب الكاذب، وفحص الملف الشخصي، ومطابقة الوظيفة، وتحليل ملفات CSV وقراءة ZIP، وبنية ملف PDF.
 
 ## المساهمة
 
@@ -78,7 +80,7 @@ MIT. انظر [LICENSE](LICENSE).
 
 Rafeeq is a free, open-source toolkit for LinkedIn members, Arabic-first. It works beside LinkedIn: it never scrapes, automates or modifies LinkedIn pages. You paste text or load your own official data export, and you post by hand.
 
-- **Web app** (`app/index.html`, single file, runs locally): job-scam checker, privacy checker with image redaction, post checker, Arabic RTL carousel-to-PDF generator, and a network analyzer for `Connections.csv`.
+- **Web app** (`app/index.html`, single file, runs locally): job-scam checker, privacy checker with image redaction (Saudi, UAE, Egyptian, Kuwaiti and context-based Arab ID numbers, Arab mobiles and IBANs), post checker, Arabic RTL carousel-to-PDF generator, profile reviewer, job matcher, and an analyzer that reads the official export ZIP (`Connections.csv`, `Shares.csv`, `Profile.csv`, `Positions.csv`).
 - **Claude plugin** (`skills/`): seven skills covering scams, privacy, posts, profiles, job matching, messages and network insights.
 
 Run the tests with `node tests/core.test.mjs`. MIT licensed.
