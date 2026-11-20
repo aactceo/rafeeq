@@ -19,7 +19,7 @@ Rafeeq works **beside** LinkedIn, never inside it. LinkedIn's help page "Prohibi
   - Optional Claude features through `window.claude.use('sample')` (AI rewrite, second opinion) and `use('downloads')`. Both are hidden when absent; standalone runs fall back to `<a download>`.
   - The PDF writer is hand-written (`jpegPdf`, JPEG pages, no library).
 - `skills/*/SKILL.md`: seven Claude plugin skills: job-scam-check, privacy-check, linkedin-post-studio, profile-optimizer, job-match, linkedin-messages, network-insights.
-- `.claude-plugin/plugin.json` and `marketplace.json`: the repo is its own plugin marketplace (`/plugin marketplace add <owner>/rafeeq`, then `/plugin install rafeeq@rafeeq`).
+- `.claude-plugin/plugin.json` and `marketplace.json`: the repo is its own plugin marketplace (`/plugin marketplace add aactceo/rafeeq`, then `/plugin install rafeeq@rafeeq`).
 - `.github/workflows/pages.yml`: runs the tests, then deploys `app/` to GitHub Pages.
 
 ## Commands

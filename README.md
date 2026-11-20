@@ -46,7 +46,7 @@
 **التثبيت في Claude Code**: المستودع نفسه سوق إضافات (marketplace).
 
 ```
-/plugin marketplace add <owner>/rafeeq      # بعد رفعه إلى GitHub، أو مسار المجلد المحلي
+/plugin marketplace add aactceo/rafeeq      # أو مسار المجلد المحلي
 /plugin install rafeeq@rafeeq
 ```
 
