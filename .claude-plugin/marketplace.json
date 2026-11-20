@@ -1,0 +1,14 @@
+{
+  "name": "rafeeq",
+  "owner": {
+    "name": "Ashraf Al Tarawneh"
+  },
+  "description": "Rafeeq: free, open-source LinkedIn helpers for Arabic and English users.",
+  "plugins": [
+    {
+      "name": "rafeeq",
+      "source": "./",
+      "description": "Free, open-source LinkedIn helpers: scam and privacy checks, Arabic and bilingual posts, profiles, job matching, messages and network insights."
+    }
+  ]
+}

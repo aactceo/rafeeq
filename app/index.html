@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>رفيق لينكدإن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a calm, trustworthy instrument: plain words, no hype
+   IDEA: a precision gauge: every tool reads something and points to it
+   PICTURE: a long horizontal scale with an orange pointer; live slide previews
+   COLOUR and TYPE: aluminium, black and one orange pointer; IBM Plex Sans Arabic
+   LAYOUT: tool tabs on top; each tool opens mid-use, input beside its reading */
+:root{color-scheme:light dark;--bg:light-dark(#e9eaec,#141517);--card:light-dark(#f7f7f8,#1d1f22);--ink:light-dark(#111214,#eceef0);--mut:light-dark(#5b5f66,#9aa0a8);--line:light-dark(#cfd2d6,#2e3136);--acc:#ff4f00;--ok:light-dark(#1f7a4d,#4cc38a);--warn:light-dark(#9a6700,#e3b341)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "IBM Plex Sans Arabic",Tahoma,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(20px,3.4vw,48px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+header h1{font-size:clamp(32px,5vw,48px);line-height:1.05;margin:0 0 8px;text-wrap:balance}
+header p{margin:0;color:var(--mut);max-width:70ch}
+.trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:14px}
+.trust span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--acc);margin-inline-end:7px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:4px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
+nav button{flex:none;font:inherit;font-weight:500;border:0;background:none;color:var(--mut);padding:10px 14px;min-height:44px;border-bottom:3px solid transparent;cursor:pointer}
+nav button[aria-selected=true]{color:var(--ink);border-color:var(--acc)}
+button,.btn{font:inherit;font-size:15px;min-height:44px;padding:8px 16px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button.pri{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:focus-visible,nav button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+textarea,input,select{font:inherit;font-size:16px;width:100%;padding:12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+textarea{min-height:260px;resize:vertical}
+h2{font-size:32px;line-height:1.1;margin:0 0 6px}
+h3{font-size:18px;margin:22px 0 8px}
+.lead{color:var(--mut);margin:0 0 18px;max-width:70ch}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.scale{position:relative;height:74px;margin:8px 0 4px}
+.scale .track{position:absolute;inset:34px 0 auto 0;height:10px;border-radius:5px;background:linear-gradient(to left,var(--ok),var(--warn) 50%,var(--acc))}
+.scale .ticks{position:absolute;inset:50px 0 0 0;display:flex;justify-content:space-between;font-size:13px;color:var(--mut)}
+.scale .ptr{position:absolute;top:0;inset-inline-start:0;transform:translateX(50%);transition:inset-inline-start .5s ease;text-align:center}
+.scale .ptr b{display:block;font-size:22px;line-height:1}
+.scale .ptr i{display:block;width:3px;height:22px;background:var(--ink);margin:2px auto 0}
+.big{font-size:clamp(28px,4vw,40px);font-weight:700;line-height:1.1}
+ul.find{list-style:none;padding:0;margin:0}
+ul.find li{padding:10px 0;border-top:1px solid var(--line)}
+ul.find li b{display:block}ul.find li small{color:var(--mut)}
+.tag{display:inline-block;font-size:13px;padding:1px 8px;border-radius:20px;border:1px solid var(--line);margin-inline-start:6px;color:var(--mut)}
+.meter{display:grid;grid-template-columns:8.5em minmax(0,1fr) 4.5em;gap:10px;align-items:center;padding:7px 0;font-size:15px}
+.meter .bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.meter .bar i{display:block;height:100%;background:var(--ink)}
+.meter span:last-child{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hook{white-space:pre-wrap;border-inline-start:3px solid var(--acc);padding:6px 12px;margin:6px 0}
+.hook em{color:var(--mut);font-style:normal}
+.out{white-space:pre-wrap;min-height:60px}
+.mark{background:color-mix(in srgb,var(--acc) 30%,transparent);border-radius:3px}
+.slides{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:14px}
+.slides canvas{width:100%;height:auto;border-radius:8px;border:1px solid var(--line);display:block}
+.imgbox{position:relative;margin-top:12px;border:1px dashed var(--line);border-radius:10px;min-height:160px;display:grid;place-items:center;color:var(--mut);overflow:hidden}
+.imgbox canvas{max-width:100%;height:auto;touch-action:none;cursor:crosshair;display:block}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:10px 0 8px}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.stats small{color:var(--mut);display:block}
+.note{font-size:14px;color:var(--mut)}
+.ai{display:none}.has-ai .ai{display:inline-flex}.has-ai .ai.blk{display:block}
+.toast{position:fixed;bottom:18px;inset-inline-start:50%;transform:translateX(50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:8px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9}
+.toast.on{opacity:1}
+footer{border-top:1px solid var(--line);color:var(--mut);font-size:14px}
+label{font-size:14px;color:var(--mut);display:block;margin-bottom:4px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+@media(max-width:860px){.cols{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:520px){.meter{grid-template-columns:6.5em minmax(0,1fr) 4em}h2{font-size:26px}}
+@media(prefers-reduced-motion:reduce){.scale .ptr{transition:none}}
+</style>
+</head>
+<body>
+<header class="band"><div class="wrap">
+  <h1>رفيق لينكدإن</h1>
+  <p>أدوات مجانية مفتوحة المصدر تساعدك على الكتابة والتحقق وحماية بياناتك على لينكدإن. كل شيء يُعالَج على جهازك، والأداة لا تدخل حسابك ولا تلمس صفحات المنصة.</p>
+  <div class="trust"><span>لا كشط ولا أتمتة</span><span>لا خوادم ولا تتبّع</span><span>أنت من ينسخ وينشر</span><span>رخصة MIT</span></div>
+</div></header>
+
+<div class="band" style="padding-block:0"><div class="wrap">
+<nav role="tablist" id="tabs">
+  <button role="tab" data-t="scam">فاحص الاحتيال الوظيفي</button>
+  <button role="tab" data-t="privacy">فاحص الخصوصية</button>
+  <button role="tab" data-t="post">مدقق المنشور</button>
+  <button role="tab" data-t="carousel">مولّد الشرائح العربية</button>
+  <button role="tab" data-t="network">محلل الشبكة</button>
+</nav>
+</div></div>
+
+<main class="band"><div class="wrap">
+
+<!-- 1. SCAM -->
+<section class="panel" id="p-scam">
+  <h2>هل هذا العرض الوظيفي حقيقي؟</h2>
+  <p class="lead">الصق رسالة المجنّد أو نص الإعلان. تعرض الأداة مؤشرات الخطر الشائعة في احتيال التوظيف، ولا تُعد حكماً نهائياً.</p>
+  <div class="cols">
+    <div>
+      <textarea id="scamIn" aria-label="نص الرسالة"></textarea>
+      <div class="row"><button class="pri" id="scamGo">افحص</button><button id="scamClr">مسح</button><button class="ai" id="scamAi">رأي ثانٍ بالذكاء الاصطناعي</button></div>
+      <p class="note">النص المعبأ مثال توضيحي.</p>
+    </div>
+    <div class="card">
+      <div class="big" id="scamLvl">—</div>
+      <div class="scale" aria-hidden="true"><div class="track"></div><div class="ticks"><span>آمن غالباً</span><span>متوسط</span><span>خطر مرتفع</span></div><div class="ptr" id="scamPtr"><b id="scamNum">0</b><i></i></div></div>
+      <h3>ما الذي وجدناه</h3>
+      <ul class="find" id="scamList"></ul>
+      <div class="ai blk"><h3>رأي ثانٍ</h3><div class="out" id="scamAiOut"></div></div>
+      <h3>قبل أن ترد</h3>
+      <ul class="find">
+        <li>ابحث عن الوظيفة في الموقع الرسمي للجهة أو صفحتها الموثقة على لينكدإن.</li>
+        <li>لا تدفع أي مبلغ، ولا ترسل صور الهوية أو الجواز أو بيانات البنك قبل عقد موقّع من جهة تحققت منها.</li>
+        <li>بلّغ عن الرسالة من قائمة «…» في لينكدإن إذا تأكد لك أنها احتيال.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 2. PRIVACY -->
+<section class="panel" id="p-privacy">
+  <h2>افحص قبل أن تنشر</h2>
+  <p class="lead">كثيرون ينشرون شهادة أو عقداً أو صورة جواز دون انتباه لما فيها من بيانات. افحص النص، واطمس الأجزاء الحساسة من الصور، وكله على جهازك.</p>
+  <div class="cols">
+    <div>
+      <h3 style="margin-top:0">النص</h3>
+      <textarea id="pvIn" aria-label="النص المراد فحصه" style="min-height:200px"></textarea>
+      <div class="row"><button class="pri" id="pvGo">افحص النص</button><button id="pvCopy">انسخ النسخة المُقنّعة</button></div>
+      <ul class="find" id="pvList" style="margin-top:12px"></ul>
+      <h3>النسخة المُقنّعة</h3>
+      <div class="card out" id="pvOut"></div>
+    </div>
+    <div>
+      <h3 style="margin-top:0">الصورة</h3>
+      <div class="row" style="margin-top:0">
+        <label class="btn" style="display:inline-flex;align-items:center;margin:0;color:var(--ink);font-size:15px">اختر صورة<input type="file" id="imgIn" accept="image/*" hidden></label>
+        <select id="imgMode" aria-label="نوع الطمس" style="width:auto"><option value="black">مستطيل أسود</option><option value="pix">تمويه بالبكسلة</option></select>
+        <button id="imgUndo">تراجع</button><button class="pri" id="imgSave">احفظ الصورة</button>
+      </div>
+      <div class="imgbox" id="imgBox"><span>اسحب بالفأرة أو بإصبعك فوق الأجزاء الحساسة لطمسها</span></div>
+      <p class="note">إعادة حفظ الصورة تحذف بياناتها الوصفية (EXIF) مثل الموقع الجغرافي وطراز الجهاز.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. POST -->
+<section class="panel" id="p-post">
+  <h2>جاهزية المنشور</h2>
+  <p class="lead">اكتب منشورك أو الصقه. يقيس المدقق الطول والافتتاحية وكثافة الفقرات والوسوم قبل أن تنشر يدوياً.</p>
+  <div class="cols">
+    <div>
+      <textarea id="postIn" aria-label="نص المنشور" style="min-height:340px"></textarea>
+      <div class="row"><button id="postCopy">انسخ</button><button id="postToCar">حوّله إلى شرائح</button>
+        <button class="ai" data-ai="short">اختصر</button><button class="ai" data-ai="hook">افتتاحية أقوى</button><button class="ai" data-ai="en">ترجم للإنجليزية</button><button class="ai" data-ai="ar">ترجم للعربية</button></div>
+      <div class="ai blk card" style="margin-top:12px"><div class="out" id="postAiOut">اقتراحات الذكاء الاصطناعي تظهر هنا، ولا يُستبدل نصك إلا إذا طلبت.</div><div class="row"><button id="postUse">استخدم الاقتراح</button></div></div>
+    </div>
+    <div class="card">
+      <div id="postMeters"></div>
+      <h3>ما يراه القارئ قبل «…المزيد»</h3>
+      <div class="hook" id="postHook"></div>
+      <p class="note">يقطع لينكدإن المنشور بعد سطرين أو ثلاثة تقريباً، ويختلف ذلك بين الجوال والحاسوب.</p>
+      <h3>ملاحظات</h3>
+      <ul class="find" id="postTips"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- 4. CAROUSEL -->
+<section class="panel" id="p-carousel">
+  <h2>شرائح PDF عربية سليمة الاتجاه</h2>
+  <p class="lead">اكتب كل شريحة وافصل بينها بسطر فيه <b>---</b>. أول سطر في الشريحة هو عنوانها، والسطر الذي يبدأ بشرطة يصبح نقطة. ارفع الملف الناتج كمستند في منشورك.</p>
+  <div class="cols">
+    <div>
+      <textarea id="carIn" aria-label="نص الشرائح" style="min-height:330px"></textarea>
+      <div class="grid3" style="margin-top:10px">
+        <div><label for="carName">الاسم</label><input id="carName" value="أشرف الطراونة"></div>
+        <div><label for="carHandle">سطر التعريف</label><input id="carHandle" value="مستشار التحول الرقمي"></div>
+        <div><label for="carTheme">النمط</label><select id="carTheme"><option value="0">ليلي</option><option value="1">ألمنيوم</option><option value="2">كحلي وذهبي</option></select></div>
+        <div><label for="carSize">المقاس</label><select id="carSize"><option value="1350">عمودي 4:5</option><option value="1080">مربع 1:1</option></select></div>
+      </div>
+      <div class="row"><button class="pri" id="carPdf">احفظ PDF</button><button id="carPng">احفظ الشريحة الأولى PNG</button></div>
+    </div>
+    <div><div class="slides" id="carOut"></div><p class="note" id="carCount"></p></div>
+  </div>
+</section>
+
+<!-- 5. NETWORK -->
+<section class="panel" id="p-network">
+  <h2>اعرف شبكتك من بياناتك الرسمية</h2>
+  <p class="lead">من لينكدإن: الإعدادات ← خصوصية البيانات ← تنزيل نسخة من بياناتك ← Connections. بعد وصول الملف ارفع Connections.csv هنا، وسيُقرأ داخل متصفحك فقط.</p>
+  <div class="row" style="margin-top:0">
+    <label class="btn" style="display:inline-flex;align-items:center;margin:0;color:var(--ink);font-size:15px">ارفع Connections.csv<input type="file" id="csvIn" accept=".csv,text/csv" hidden></label>
+    <button id="csvDemo">جرّب ببيانات تجريبية</button><span class="note" id="csvSrc"></span>
+  </div>
+  <div class="stats" id="netStats"></div>
+  <div class="cols">
+    <div class="card"><h3 style="margin-top:0">نمو الشبكة حسب السنة</h3><div id="netYears"></div></div>
+    <div class="card"><h3 style="margin-top:0">أكثر الجهات حضوراً</h3><div id="netCos"></div></div>
+    <div class="card"><h3 style="margin-top:0">الأدوار الوظيفية</h3><div id="netRoles"></div></div>
+    <div class="card"><h3 style="margin-top:0">أفكار عملية</h3><ul class="find" id="netTips"></ul></div>
+  </div>
+</section>
+
+</div></main>
+
+<footer class="band"><div class="wrap">
+  رفيق مشروع مفتوح المصدر برخصة MIT. لا يرتبط بلينكدإن ولا تعتمده، ويلتزم بشروطها: لا يقرأ صفحاتها ولا يغيّرها ولا يؤتمت أي نشاط عليها.
+</div></footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+{
+/*CORE-START*/
+const normDigits = s => s.replace(/[٠-٩]/g, d => String(d.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, d => String(d.charCodeAt(0) - 0x06F0));
+
+const SCAM_RULES = [
+  {id:'fee', w:3, re:/(رسوم|رسم)\s*(ال)?(تسجيل|تدريب|تأشيرة|معاملة|توظيف|اشتراك|ملف)|(ادفع|تحويل|حوّل|حول|سداد|إيداع)\s*(مبلغ|رسوم|عربون)|registration fee|training fee|processing fee|pay (a |the )?(fee|deposit)/i,
+   t:'طلب رسوم أو مبلغ مسبق', why:'جهات التوظيف الحقيقية لا تطلب من المتقدم دفع أي مبلغ مقابل الوظيفة.'},
+  {id:'docs', w:2, re:/(صورة|نسخة|صوره)\s*(من\s*)?(ال)?(هوية|جواز|إقامة|اقامة|بطاقة)|رقم\s*(ال)?(حساب|آيبان|ايبان|بطاقة)|آيبان|ايبان|\bIBAN\b|passport (copy|scan)|bank (account|details)|national id/i,
+   t:'طلب وثائق شخصية أو بنكية مبكراً', why:'تُطلب هذه البيانات عادةً بعد التعاقد ومن خلال قنوات رسمية.'},
+  {id:'off', w:2, re:/واتس\s*اب|واتساب|وتساب|تلي?جرام|تيليجرام|سيجنال|whats\s*app|telegram|signal app|wa\.me|t\.me\//i,
+   t:'نقل المحادثة إلى تطبيق خارجي', why:'المحتالون يخرجون بالمحادثة من لينكدإن كي لا تعمل أدوات الحماية والإبلاغ.'},
+  {id:'urg', w:1, re:/عاجل|فورا|فوراً|خلال\s*\d+\s*(ساعة|ساعات|دقيقة)|فرصة\s*(محدودة|لن تتكرر)|آخر فرصة|المقاعد محدودة|urgent|immediately|within \d+ hours|limited (spots|time)|act now/i,
+   t:'ضغط زمني', why:'الاستعجال يهدف إلى منعك من التحقق.'},
+  {id:'good', w:2, re:/بدون خبرة|دون خبرة|لا يشترط (أي )?خبرة|دخل يومي|ربح يومي|أرباح يومية|من المنزل.{0,30}(يومي|يومياً|يوميا)|no experience (needed|required)|earn \$?\d+.{0,20}(per|a) (day|hour)|daily (income|payout)/i,
+   t:'عرض أفضل من أن يكون حقيقياً', why:'دخل مرتفع وسريع دون خبرة من أشهر علامات الاحتيال.'},
+  {id:'crypto', w:3, re:/بيتكوين|عملات?\s*رقمية|عملة مشفرة|USDT|كريبتو|crypto|bitcoin|gift ?cards?|بطاقات?\s*(هدايا|شحن)/i,
+   t:'دفع بعملات رقمية أو بطاقات هدايا', why:'وسائل دفع يصعب تتبعها واستردادها، ولا تستخدمها جهات التوظيف.'},
+  {id:'task', w:3, re:/(مهام|مهمة|مهمات).{0,40}(إعجاب|اعجاب|متابعة|تقييم|لايك)|تقييمات مدفوعة|like (videos|posts) and earn|rate products|task[- ]based (job|work)/i,
+   t:'«وظيفة مهام» مدفوعة', why:'نمط معروف يبدأ بمبالغ صغيرة ثم يطلب إيداعاً لفتح «مهام» أكبر.'},
+  {id:'mail', w:1, re:/[\w.+-]+@(gmail|yahoo|hotmail|outlook|live|icloud|proton)\.(com|me)/i,
+   t:'بريد مجاني بدل بريد الشركة', why:'الشركات تراسل عادة من نطاقها الرسمي. تحقق من النطاق.'},
+  {id:'short', w:1, re:/bit\.ly|tinyurl|cutt\.ly|rb\.gy|is\.gd|shorturl|t\.co\//i,
+   t:'رابط مختصر يخفي وجهته', why:'لا تفتحه قبل معرفة الموقع الحقيقي.'},
+  {id:'chat', w:2, re:/مقابلة\s*(عبر|على|في|من خلال)\s*(ال)?(دردشة|محادثة|واتس|تلي|رسائل)|interview (via|over|on) (chat|text|telegram|whatsapp)/i,
+   t:'مقابلة بالدردشة فقط', why:'المقابلات الجادة تكون عادة بالصوت أو الفيديو أو حضورياً.'},
+  {id:'equip', w:2, re:/شراء\s*(ال)?(معدات|أجهزة|جهاز|لابتوب)|شيك|purchase (equipment|a laptop)|(send|deposit) (a |the )?(check|cheque)/i,
+   t:'طلب شراء معدات أو إيداع شيك', why:'حيلة شائعة: شيك مزيف ثم طلب إعادة جزء من المبلغ.'},
+  {id:'secret', w:1, re:/لا تخبر|سرية تامة|سري للغاية|keep (this )?confidential|don'?t tell/i,
+   t:'طلب السرية', why:'عزلك عن استشارة الآخرين علامة تحذير.'}
+];
+const BRAND_RE = /(وزارة|هيئة|حكومي|حكومية|أرامكو|ارامكو|نيوم|سابك|NEOM|Aramco|SABIC|ministry)/i;
+
+function scoreScam(text){
+  const s = normDigits(text||'');
+  const hits = SCAM_RULES.filter(r => r.re.test(s)).map(r => ({...r, m:(s.match(r.re)||[''])[0]}));
+  if (hits.some(h => h.id==='fee') && BRAND_RE.test(s)) hits.push({id:'imp', w:2, t:'اسم جهة كبرى أو حكومية مع طلب مال', why:'انتحال أسماء الجهات المعروفة أسلوب متكرر. تحقق من القناة الرسمية للجهة.', m:(s.match(BRAND_RE)||[''])[0]});
+  const score = Math.min(10, hits.reduce((a,h)=>a+h.w,0));
+  const level = score<=2 ? 'منخفض' : score<=5 ? 'متوسط' : 'مرتفع';
+  return {score, level, hits};
+}
+
+function luhn(d){let s=0,alt=false;for(let i=d.length-1;i>=0;i--){let n=+d[i];if(alt){n*=2;if(n>9)n-=9}s+=n;alt=!alt}return s%10===0}
+const PII_RULES = [
+  {id:'iban', t:'رقم آيبان', re:/\bSA\d{2}(?:\s?[0-9A-Z]){20}\b/gi},
+  {id:'card', t:'رقم بطاقة بنكية', re:/(?<!\d)(?:\d[ -]?){12,18}\d(?!\d)/g, ok:m=>{const d=m.replace(/\D/g,'');return d.length>=13&&d.length<=19&&luhn(d)}},
+  {id:'mob', t:'رقم جوال سعودي', re:/(?<!\d)(?:\+?966[\s-]?|0)5\d(?:[\s-]?\d){7}(?!\d)/g},
+  {id:'nid', t:'رقم هوية أو إقامة محتمل', re:/(?<!\d)[12]\d{9}(?!\d)/g},
+  {id:'mail', t:'بريد إلكتروني', re:/[\w.+-]+@[\w-]+(\.[\w-]+)+/g},
+  {id:'pass', t:'رقم جواز محتمل', re:/\b[A-Z]{1,2}\d{6,8}\b/g},
+  {id:'mrz', t:'سطر قراءة آلية من جواز (MRZ)', re:/^[A-Z0-9<]{25,44}$/gm, ok:m=>m.includes('<<')},
+  {id:'dob', t:'تاريخ ميلاد', re:/(تاريخ الميلاد|تاريخ ميلاد|مواليد|date of birth|DOB)\s*[:：]?\s*[\d\/\-.]{6,10}/gi}
+];
+function findPII(text){
+  const s = normDigits(text||''); const out=[];
+  for (const r of PII_RULES){ r.re.lastIndex=0; let m;
+    while((m=r.re.exec(s))){ if(!r.ok||r.ok(m[0])) out.push({id:r.id,t:r.t,start:m.index,end:m.index+m[0].length,v:m[0]}); if(m[0]==='')r.re.lastIndex++; } }
+  out.sort((a,b)=>a.start-b.start||(b.end-b.start)-(a.end-a.start));
+  const res=[]; let last=-1; for(const f of out){ if(f.start>=last){res.push(f); last=f.end} }
+  return res;
+}
+function maskPII(text, finds){
+  let r='', i=0; const src=text||'';
+  for(const f of finds){ r+=src.slice(i,f.start); const v=src.slice(f.start,f.end); let keep=f.id==='mail'?0:2;
+    r+=v.replace(/\S/g,(c,k)=>k>=v.length-keep?c:'•'); i=f.end; }
+  return r+src.slice(i);
+}
+
+function analyzePost(text){
+  const t=text||''; const chars=[...t].length;
+  const words=(t.match(/[\p{L}\p{N}]+/gu)||[]).length;
+  const tags=t.match(/#[\p{L}\p{N}_]+/gu)||[];
+  const links=t.match(/https?:\/\/\S+/g)||[];
+  const ments=t.match(/@[\p{L}\p{N}_.-]+/gu)||[];
+  const emo=t.match(/\p{Extended_Pictographic}/gu)||[];
+  const paras=t.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean);
+  const longP=paras.filter(p=>[...p].length>320).length;
+  const firstLine=(t.trim().split('\n')[0]||'');
+  const ar=(t.match(/[؀-ۿ]/g)||[]).length, la=(t.match(/[A-Za-z]/g)||[]).length;
+  const tail=t.trim().slice(-220);
+  const tips=[];
+  if(chars>3000) tips.push(['حذف','تجاوزت الحد الأقصى (3,000 حرف). لن يقبل لينكدإن المنشور بهذا الطول.']);
+  else if(chars>1800) tips.push(['اختصار','المنشور طويل. المنشورات المركزة أسهل في القراءة على الجوال.']);
+  if(chars>0&&chars<120) tips.push(['إضافة','المنشور قصير جداً. أضف سياقاً أو مثالاً عملياً.']);
+  if([...firstLine].length>140) tips.push(['افتتاحية','السطر الأول طويل. اجعله جملة واحدة قوية تشد القارئ.']);
+  if(longP) tips.push(['تقسيم',`لديك ${longP} فقرة طويلة. قسّمها إلى أسطر قصيرة مع مسافات بينها.`]);
+  if(tags.length>5) tips.push(['وسوم',`${tags.length} وسوماً كثيرة. اكتفِ بثلاثة إلى خمسة وسوم ذات صلة.`]);
+  if(tags.length===0&&chars>200) tips.push(['وسوم','لا توجد وسوم. أضف وسمين أو ثلاثة تصف الموضوع.']);
+  if(links.length) tips.push(['رابط','يوجد رابط خارجي. يفضّل كثير من الكتّاب وضعه في أول تعليق، فجرّب ما يناسب جمهورك.']);
+  if(emo.length>8) tips.push(['رموز','الرموز التعبيرية كثيرة وقد تضعف الطابع المهني.']);
+  if(chars>200&&!/[?؟]/.test(tail)) tips.push(['تفاعل','لا يوجد سؤال في الخاتمة. سؤال محدد يدعو القراء إلى النقاش.']);
+  if(ar&&la&&la/(ar+la)>0.35) tips.push(['لغة','يجمع النص لغتين بكثافة. فكّر في نسختين منفصلتين أو في ترجمة المصطلحات.']);
+  return {chars,words,tags:tags.length,links:links.length,mentions:ments.length,emoji:emo.length,paras:paras.length,longP,read:Math.max(1,Math.round(words/200)),hook:(()=>{let n=0,o=[];for(const l of t.split('\n')){o.push(l);if(l.trim()&&++n>=3)break}return [...o.join('\n')].slice(0,210).join('')})(),tips};
+}
+
+function parseCSV(text){
+  const rows=[]; let row=[], f='', q=false;
+  for(let i=0;i<text.length;i++){ const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++} else q=false } else f+=c }
+    else if(c==='"') q=true; else if(c===','){row.push(f);f=''} else if(c==='\n'){row.push(f);rows.push(row);row=[];f=''} else if(c!=='\r') f+=c; }
+  if(f||row.length){row.push(f);rows.push(row)}
+  return rows;
+}
+const ROLE_CATS=[['قيادة وإدارة',/chief|ceo|cto|cio|vp|vice president|director|head|manager|lead|مدير|رئيس|قائد|نائب/i],['استشارات',/consult|advisor|مستشار|استشاري/i],['هندسة وتقنية',/engineer|developer|architect|devops|data|software|مهندس|مطور|بيانات|معماري/i],['مبيعات وتسويق',/sales|marketing|account|business development|مبيعات|تسويق|تطوير أعمال/i],['أكاديمي وبحثي',/professor|lecturer|research|phd|أستاذ|محاضر|باحث|دكتور/i],['موارد بشرية وتوظيف',/recruit|talent|hr|human resources|توظيف|موارد بشرية|استقطاب/i],['طلاب وحديثو تخرج',/student|intern|graduate|طالب|متدرب|خريج/i]];
+function analyzeConnections(text){
+  const rows=parseCSV(text.replace(/^﻿/,''));
+  const hi=rows.findIndex(r=>r.some(c=>/first name/i.test(c)));
+  if(hi<0) return {error:'لم أجد صف العناوين (First Name). تأكد أن الملف هو Connections.csv من تصدير لينكدإن.'};
+  const h=rows[hi].map(c=>c.trim().toLowerCase()); const ix=n=>h.findIndex(c=>c===n);
+  const iC=ix('company'), iP=ix('position'), iD=ix('connected on'), iE=ix('email address');
+  const data=rows.slice(hi+1).filter(r=>r.length>1&&r.join('').trim());
+  const years={}, cos={}, roles={}; let email=0, last12=0; const now=Date.now();
+  const DRE=/^\d{1,2}[\s-][A-Za-z]{3}[\s-]\d{4}$|^\d{4}-\d{2}-\d{2}$/;
+  for(const r of data){ let d=(r[iD]||'').trim(); if(!DRE.test(d)) d=([...r].reverse().find(c=>DRE.test(c.trim()))||d).trim(); const y=(d.match(/\d{4}/)||[])[0]; if(y) years[y]=(years[y]||0)+1;
+    const dt=Date.parse(d); if(!isNaN(dt)&&now-dt<365*864e5) last12++;
+    const co=(r[iC]||'').trim(); if(co) cos[co]=(cos[co]||0)+1;
+    const p=(r[iP]||''); const cat=(ROLE_CATS.find(([,re])=>re.test(p))||['أخرى'])[0]; roles[cat]=(roles[cat]||0)+1;
+    if(iE>=0&&(r[iE]||'').trim()) email++; }
+  const top=(o,n)=>Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,n);
+  return {total:data.length,last12,email,years:Object.entries(years).sort((a,b)=>a[0]-b[0]),cos:top(cos,8),coCount:Object.keys(cos).length,roles:top(roles,8)};
+}
+
+function wrapText(measure, text, maxW){
+  const out=[]; for(const para of String(text).split('\n')){ const words=para.split(/\s+/).filter(Boolean); let line='';
+    for(const w of words){ const t=line?line+' '+w:w; if(measure(t)>maxW&&line){out.push(line);line=w} else line=t }
+    out.push(line); } return out;
+}
+function parseSlides(text){ return String(text).split(/^\s*-{3,}\s*$/m).map(s=>s.trim()).filter(Boolean).map(s=>{const lines=s.split('\n'); return {title:lines[0].trim(), body:lines.slice(1).map(l=>l.trim()).filter(Boolean)}}); }
+
+function jpegPdf(pages){
+  const enc=new TextEncoder(); const parts=[]; let len=0; const offs=[];
+  const push=x=>{const b=typeof x==='string'?enc.encode(x):x; parts.push(b); len+=b.length};
+  const obj=(id,fn)=>{offs[id]=len; push(id+' 0 obj\n'); fn(); push('\nendobj\n')};
+  push('%PDF-1.4\n'); const n=pages.length;
+  obj(1,()=>push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2,()=>push('<< /Type /Pages /Kids ['+pages.map((_,i)=>(3+i*3)+' 0 R').join(' ')+'] /Count '+n+' >>'));
+  pages.forEach((p,i)=>{ const pid=3+i*3, W=+(p.w*0.75).toFixed(2), H=+(p.h*0.75).toFixed(2), cs='q '+W+' 0 0 '+H+' 0 0 cm /Im'+i+' Do Q';
+    obj(pid,()=>push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /XObject << /Im'+i+' '+(pid+2)+' 0 R >> >> /Contents '+(pid+1)+' 0 R >>'));
+    obj(pid+1,()=>{push('<< /Length '+cs.length+' >>\nstream\n');push(cs);push('\nendstream')});
+    obj(pid+2,()=>{push('<< /Type /XObject /Subtype /Image /Width '+p.w+' /Height '+p.h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+p.bytes.length+' >>\nstream\n');push(p.bytes);push('\nendstream')}); });
+  const total=3+n*3, xref=len; let x='xref\n0 '+total+'\n0000000000 65535 f \n';
+  for(let i=1;i<total;i++) x+=String(offs[i]).padStart(10,'0')+' 00000 n \n';
+  push(x); push('trailer\n<< /Size '+total+' /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF\n');
+  return parts;
+}
+/*CORE-END*/
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>Number(n).toLocaleString('ar-SA');
+const toast=m=>{const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2600)};
+const copy=async s=>{try{await navigator.clipboard.writeText(s);toast('تم النسخ')}catch(e){toast('تعذّر النسخ. حدّد النص وانسخه يدوياً')}};
+const store={get:k=>{try{return localStorage.getItem('rafeeq.'+k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem('rafeeq.'+k,v)}catch(e){}}};
+
+let dl=null, sample=null;
+async function saveFile(name, blob){
+  if(dl){ try{await dl.save({filename:name,data:blob});toast('تم الحفظ')}catch(e){ if(e&&e.code!=='declined') toast('تعذّر الحفظ هنا')} return; }
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
+}
+if(window.claude&&claude.use){
+  claude.use('downloads').then(d=>{dl=d}).catch(()=>{});
+  claude.use('sample').then(s=>{ if(s){sample=s;document.body.classList.add('has-ai')} }).catch(()=>{});
+}
+async function ask(prompt, outEl){
+  if(!sample) return null; outEl.textContent='جارٍ التفكير…';
+  try{ const r=await sample(prompt,{onText:({text})=>{outEl.textContent=text}}); outEl.textContent=r.text; return r.text }
+  catch(e){ outEl.textContent=e&&e.code==='rate_limited'?'طلبات كثيرة. حاول بعد قليل.':'تعذّر الحصول على اقتراح الآن.'; if(e&&e.code==='not_granted') document.body.classList.remove('has-ai'); return null }
+}
+
+/* tabs */
+const TABS=['scam','privacy','post','carousel','network'];
+function show(t){ if(!TABS.includes(t)) t='scam';
+  document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));
+  if(t==='carousel') drawSlides(); }
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.t}));
+addEventListener('hashchange',()=>show(location.hash.slice(1)));
+
+/* scam */
+const SCAM_SAMPLE=`مرحباً، تم اختيارك لوظيفة "مدخل بيانات عن بُعد" لدى شركة كبرى بدخل يومي يصل إلى 800 ريال بدون خبرة.
+المقاعد محدودة، ويجب التأكيد خلال 24 ساعة.
+لإكمال الملف يرجى دفع رسوم التسجيل 150 ريال وإرسال صورة الهوية ورقم الآيبان.
+تواصل معنا على واتساب: wa.me/966500000000 أو عبر البريد hr.jobs.ksa@gmail.com`;
+function runScam(){ const r=scoreScam($('scamIn').value); $('scamNum').textContent=fmt(r.score); $('scamLvl').textContent='مستوى الخطر: '+r.level;
+  $('scamPtr').style.insetInlineStart=`calc(${r.score*10}% - ${r.score*0.3}px)`;
+  $('scamList').innerHTML=r.hits.length?r.hits.map(h=>`<li><b>${esc(h.t)}<span class="tag">+${h.w}</span></b><small>${esc(h.why)}${h.m?' · العبارة: «'+esc(h.m)+'»':''}</small></li>`).join(''):'<li>لم نجد مؤشرات شائعة. هذا لا يعني أن العرض موثوق، فتحقق من الجهة دائماً.</li>';
+  store.set('scam',$('scamIn').value); }
+$('scamIn').value=store.get('scam')||SCAM_SAMPLE;
+$('scamGo').addEventListener('click',runScam); $('scamIn').addEventListener('input',runScam);
+$('scamClr').addEventListener('click',()=>{$('scamIn').value='';runScam();$('scamIn').focus()});
+$('scamAi').addEventListener('click',()=>ask(`أنت خبير في كشف احتيال التوظيف على لينكدإن في السعودية والخليج. حلّل الرسالة التالية بالعربية في 5 نقاط قصيرة: الحكم المرجّح (احتيال محتمل / غير واضح / يبدو سليماً)، أبرز المؤشرات، ما يجب التحقق منه، والرد المقترح إن لزم. لا تؤكد أن جهة بعينها متورطة.\n\nالرسالة:\n"""${$('scamIn').value.slice(0,4000)}"""`,$('scamAiOut')));
+
+/* privacy */
+const PV_SAMPLE=`يسعدني مشاركتكم شهادة إتمام البرنامج 🎓
+الاسم: محمد أحمد — رقم الهوية: 1098765432
+للتواصل: 0551234567 أو mohammed.a@example.com
+تاريخ الميلاد: 1990/05/14`;
+let pvFinds=[];
+function runPV(){ const t=$('pvIn').value; pvFinds=findPII(t);
+  $('pvList').innerHTML=pvFinds.length?pvFinds.map(f=>`<li><b>${esc(f.t)}</b><small dir="ltr">${esc(f.v)}</small></li>`).join(''):'<li>لم نجد بيانات حساسة بالأنماط المعروفة. راجع النص بعينك أيضاً.</li>';
+  let h='',i=0; for(const f of pvFinds){h+=esc(t.slice(i,f.start))+'<span class="mark">'+esc(maskPII(t.slice(f.start,f.end),[{...f,start:0,end:f.end-f.start}]))+'</span>';i=f.end} $('pvOut').innerHTML=h+esc(t.slice(i)); }
+$('pvIn').value=PV_SAMPLE; $('pvIn').addEventListener('input',runPV); $('pvGo').addEventListener('click',runPV);
+$('pvCopy').addEventListener('click',()=>copy(maskPII($('pvIn').value,pvFinds)));
+
+/* image redaction */
+let img=null, rects=[], drag=null; const cv=document.createElement('canvas'), cx=cv.getContext('2d');
+function drawImg(){ if(!img) return; cx.drawImage(img,0,0,cv.width,cv.height);
+  for(const r of [...rects,...(drag?[drag]:[])]){ const x=Math.min(r.x0,r.x1),y=Math.min(r.y0,r.y1),w=Math.abs(r.x1-r.x0),h=Math.abs(r.y1-r.y0); if(w<2||h<2) continue;
+    if(r.mode==='pix'){ const s=Math.max(8,Math.round(Math.max(w,h)/14)); const tc=document.createElement('canvas'); tc.width=Math.max(1,Math.ceil(w/s)); tc.height=Math.max(1,Math.ceil(h/s)); const tx=tc.getContext('2d'); tx.drawImage(cv,x,y,w,h,0,0,tc.width,tc.height); cx.imageSmoothingEnabled=false; cx.drawImage(tc,0,0,tc.width,tc.height,x,y,w,h); cx.imageSmoothingEnabled=true; }
+    else { cx.fillStyle='#000'; cx.fillRect(x,y,w,h); } } }
+const pt=e=>{const b=cv.getBoundingClientRect();return [(e.clientX-b.left)*cv.width/b.width,(e.clientY-b.top)*cv.height/b.height]};
+cv.addEventListener('pointerdown',e=>{if(!img)return;cv.setPointerCapture(e.pointerId);const [x,y]=pt(e);drag={x0:x,y0:y,x1:x,y1:y,mode:$('imgMode').value}});
+cv.addEventListener('pointermove',e=>{if(!drag)return;const [x,y]=pt(e);drag.x1=x;drag.y1=y;drawImg()});
+cv.addEventListener('pointerup',()=>{if(drag){rects.push(drag);drag=null;drawImg()}});
+$('imgIn').addEventListener('change',e=>{const f=e.target.files[0]; if(!f) return; const u=URL.createObjectURL(f); const im=new Image();
+  im.onload=()=>{const k=Math.min(1,1800/Math.max(im.width,im.height)); cv.width=Math.round(im.width*k); cv.height=Math.round(im.height*k); img=im; rects=[]; $('imgBox').innerHTML=''; $('imgBox').appendChild(cv); drawImg()}; im.src=u;});
+$('imgUndo').addEventListener('click',()=>{rects.pop();drawImg()});
+$('imgSave').addEventListener('click',()=>{ if(!img){toast('اختر صورة أولاً');return} cv.toBlob(b=>saveFile('rafeeq-redacted.png',b),'image/png') });
+
+/* post */
+const POST_SAMPLE=`ثلاثة أخطاء تُفشل مشاريع التحول الرقمي قبل أن تبدأ.
+
+بعد سنوات من العمل مع جهات حكومية وخاصة، لاحظت أن المشكلة نادراً ما تكون في التقنية.
+
+١. البدء بالأداة قبل تعريف المشكلة.
+٢. غياب مالك واضح للبيانات.
+٣. قياس الإنجاز بعدد الأنظمة لا بأثرها على المستفيد.
+
+الحل يبدأ بخريطة قيمة بسيطة: ماذا يحتاج المستفيد؟ ومن المسؤول؟ وكيف نقيس الأثر؟
+
+ما الخطأ الذي واجهته أنت في مشروعك الأخير؟
+
+#التحول_الرقمي #البنية_المؤسسية #حوكمة_البيانات`;
+function runPost(){ const t=$('postIn').value, a=analyzePost(t); store.set('post',t);
+  const m=(l,v,max,txt)=>`<div class="meter"><span>${l}</span><span class="bar"><i style="width:${Math.min(100,v/max*100)}%;${v>max?'background:var(--acc)':''}"></i></span><span>${txt}</span></div>`;
+  $('postMeters').innerHTML=m('الطول',a.chars,3000,fmt(a.chars)+' / ٣٠٠٠')+m('الوسوم',a.tags,5,fmt(a.tags))+m('الفقرات',a.paras,12,fmt(a.paras))+m('الإشارات',a.mentions,5,fmt(a.mentions))+m('وقت القراءة',a.read,5,fmt(a.read)+' د');
+  $('postHook').innerHTML=esc(a.hook)+([...a.hook].length<a.chars?'<em>… المزيد</em>':'');
+  $('postTips').innerHTML=a.tips.length?a.tips.map(([k,v])=>`<li><b>${esc(k)}</b><small>${esc(v)}</small></li>`).join(''):'<li><b>جاهز</b><small>لا ملاحظات جوهرية. راجع الصياغة بصوتك أنت ثم انشر.</small></li>'; }
+$('postIn').value=store.get('post')||POST_SAMPLE; $('postIn').addEventListener('input',runPost);
+$('postCopy').addEventListener('click',()=>copy($('postIn').value));
+$('postToCar').addEventListener('click',()=>{ const ps=$('postIn').value.replace(/#[\p{L}\p{N}_]+/gu,'').split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean); $('carIn').value=ps.join('\n---\n'); location.hash='carousel'; });
+let postSug='';
+const AI_TASK={short:'اختصر المنشور التالي إلى نصف طوله تقريباً مع الإبقاء على الفكرة والصوت الشخصي واللغة نفسها.',hook:'اقترح 3 جمل افتتاحية بديلة وقوية للمنشور التالي، كل جملة في سطر، بلا مبالغة أو وعود كاذبة، وباللغة نفسها.',en:'Translate the following LinkedIn post into natural professional English, keeping line breaks and hashtags (translate hashtags too).',ar:'ترجم منشور لينكدإن التالي إلى عربية فصحى مهنية سلسة مع الحفاظ على الأسطر والوسوم.'};
+document.querySelectorAll('[data-ai]').forEach(b=>b.addEventListener('click',async()=>{ postSug=await ask(AI_TASK[b.dataset.ai]+'\nأعد النص الناتج فقط دون مقدمة.\n\n"""'+$('postIn').value.slice(0,6000)+'"""',$('postAiOut'))||''; }));
+$('postUse').addEventListener('click',()=>{ if(!postSug) return; $('postIn').value=postSug; runPost(); toast('استُبدل النص') });
+
+/* carousel */
+const CAR_SAMPLE=`ثلاثة أخطاء تُفشل التحول الرقمي
+قبل أن يبدأ المشروع
+---
+البدء بالأداة قبل المشكلة
+- شراء منصة قبل تعريف الاحتياج
+- النتيجة: نظام لا يستخدمه أحد
+---
+غياب مالك البيانات
+- لا أحد مسؤول عن الجودة
+- كل إدارة تعرّف المؤشر بطريقتها
+---
+قياس الشيء الخطأ
+- عدد الأنظمة ليس إنجازاً
+- قِس أثرها على المستفيد
+---
+ابدأ بخريطة قيمة بسيطة
+ماذا يحتاج المستفيد؟ ومن المسؤول؟ وكيف نقيس الأثر؟`;
+const THEMES=[{bg:'#141517',ink:'#f2f3f5',mut:'#9aa0a8',acc:'#ff4f00'},{bg:'#e9eaec',ink:'#111214',mut:'#5b5f66',acc:'#ff4f00'},{bg:'#0e2a47',ink:'#ffffff',mut:'#b9c7d6',acc:'#f4c542'}];
+const FONT='"IBM Plex Sans Arabic", Tahoma, sans-serif';
+let canvases=[];
+function renderSlide(c,s,i,n,th,H){ const W=1080; c.width=W; c.height=H; const x=c.getContext('2d'); const pad=96;
+  x.fillStyle=th.bg; x.fillRect(0,0,W,H); x.direction='rtl'; x.textAlign='right'; x.textBaseline='alphabetic';
+  const edge=i===0||i===n-1; const tSize=edge?92:70;
+  x.font=`700 ${tSize}px ${FONT}`; const tl=wrapText(t=>x.measureText(t).width,s.title,W-pad*2);
+  x.font=`400 48px ${FONT}`; const bl=[]; for(const b of s.body){ const bul=/^[-•–]\s*/.test(b); const tx=b.replace(/^[-•–]\s*/,''); wrapText(t=>x.measureText(t).width,tx,W-pad*2-(bul?56:0)).forEach((l,k)=>bl.push({l,bul:bul&&k===0,ind:bul})); bl.push({gap:true}); }
+  const tH=tl.length*tSize*1.2, bH=bl.reduce((a,b)=>a+(b.gap?22:70),0); let y=Math.max(pad+tSize+60,(H-tH-bH)/2+tSize);
+  x.fillStyle=th.acc; x.fillRect(W-pad-90,y-tSize-40,90,10);
+  x.fillStyle=th.ink; x.font=`700 ${tSize}px ${FONT}`; for(const l of tl){x.fillText(l,W-pad,y);y+=tSize*1.2} y+=30;
+  x.font=`400 48px ${FONT}`; for(const b of bl){ if(b.gap){y+=22;continue} y+=8; if(b.bul){x.fillStyle=th.acc;x.beginPath();x.arc(W-pad-14,y-15,9,0,7);x.fill()} x.fillStyle=edge?th.mut:th.ink; x.fillText(b.l,W-pad-(b.ind?56:0),y); y+=62; }
+  x.font=`500 30px ${FONT}`; x.fillStyle=th.ink; x.fillText($('carName').value,W-pad,H-pad+6); x.fillStyle=th.mut; x.font=`400 26px ${FONT}`; x.fillText($('carHandle').value,W-pad,H-pad+46);
+  x.textAlign='left'; x.direction='ltr'; x.font=`500 30px ${FONT}`; x.fillStyle=th.mut; x.fillText((i+1)+' / '+n,pad,H-pad+20);
+  if(i<n-1){x.fillStyle=th.acc;x.font=`700 56px ${FONT}`;x.fillText('←',pad,pad+30)} }
+async function drawSlides(){ const slides=parseSlides($('carIn').value); store.set('car',$('carIn').value);
+  try{await document.fonts.load(`700 70px ${FONT}`);await document.fonts.load(`400 44px ${FONT}`)}catch(e){}
+  const th=THEMES[+$('carTheme').value], H=+$('carSize').value, out=$('carOut');
+  while(canvases.length<slides.length) canvases.push(document.createElement('canvas')); canvases.length=slides.length;
+  out.replaceChildren(...canvases); slides.forEach((s,i)=>renderSlide(canvases[i],s,i,slides.length,th,H));
+  $('carCount').textContent=slides.length?`${fmt(slides.length)} شرائح · ${H===1350?'1080×1350':'1080×1080'} بكسل`:'اكتب نص الشرائح لتظهر هنا.'; }
+$('carIn').value=store.get('car')||CAR_SAMPLE;
+let carT; ['carIn','carName','carHandle'].forEach(id=>$(id).addEventListener('input',()=>{clearTimeout(carT);carT=setTimeout(drawSlides,250)}));
+['carTheme','carSize'].forEach(id=>$(id).addEventListener('change',drawSlides));
+const b64=u=>{const s=atob(u.split(',')[1]);const a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a};
+$('carPdf').addEventListener('click',()=>{ if(!canvases.length) return; const parts=jpegPdf(canvases.map(c=>({w:c.width,h:c.height,bytes:b64(c.toDataURL('image/jpeg',0.92))}))); saveFile('rafeeq-carousel.pdf',new Blob(parts,{type:'application/pdf'})); });
+$('carPng').addEventListener('click',()=>{ if(canvases[0]) canvases[0].toBlob(b=>saveFile('rafeeq-slide-1.png',b),'image/png') });
+
+/* network */
+function bars(list,max){ return list.length?list.map(([k,v])=>`<div class="meter"><span title="${esc(k)}" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(k)}</span><span class="bar"><i style="width:${v/max*100}%"></i></span><span>${fmt(v)}</span></div>`).join(''):'<p class="note">لا توجد بيانات.</p>'; }
+function runNet(text,src){ const a=analyzeConnections(text); $('csvSrc').textContent=src;
+  if(a.error){ $('netStats').innerHTML=`<div>${esc(a.error)}</div>`; return; }
+  $('netStats').innerHTML=`<div><small>إجمالي الاتصالات</small><span class="big">${fmt(a.total)}</span></div><div><small>أُضيفوا آخر 12 شهراً</small><span class="big">${fmt(a.last12)}</span></div><div><small>جهات مختلفة</small><span class="big">${fmt(a.coCount)}</span></div><div><small>شاركوا بريدهم معك</small><span class="big">${fmt(a.email)}</span></div>`;
+  const yMax=Math.max(1,...a.years.map(y=>y[1])); $('netYears').innerHTML=bars(a.years,yMax);
+  $('netCos').innerHTML=bars(a.cos,Math.max(1,...a.cos.map(c=>c[1]))); $('netRoles').innerHTML=bars(a.roles,Math.max(1,...a.roles.map(c=>c[1])));
+  const tips=[]; const lead=a.roles.find(r=>r[0]==='قيادة وإدارة'); if(lead) tips.push(`${fmt(lead[1])} من شبكتك في مواقع قيادية. محتوى عن القرار والأثر يناسبهم أكثر من التفاصيل التقنية.`);
+  if(a.cos[0]) tips.push(`أكبر حضور لجهة «${a.cos[0][0]}». إذا كانت عميلاً أو شريكاً محتملاً، فاكتب عن تحدياتها العامة دون إفصاح عن أي معلومات خاصة.`);
+  if(a.total&&a.last12/a.total<0.1) tips.push('نمو شبكتك بطيء في آخر سنة. أرسل دعوات شخصية لمن قابلتهم فعلاً في الفعاليات والمشاريع.');
+  if(a.email) tips.push('لديك عناوين بريد شاركها أصحابها معك. لا تضفها إلى قوائم بريدية دون موافقتهم الصريحة.');
+  tips.push('هذا الملف لقطة من بياناتك، فلا ترفعه إلى أي خدمة لا تثق بها.');
+  $('netTips').innerHTML=tips.map(t=>`<li>${esc(t)}</li>`).join(''); }
+$('csvIn').addEventListener('change',e=>{const f=e.target.files[0]; if(!f) return; f.text().then(t=>runNet(t,'الملف: '+f.name))});
+function demoCSV(){ const cos=['Nakheel Data Co.','Rawabi Systems','Al Noor University','Sahab Cloud','Gov Agency A','Gov Agency B','Tamkeen Consulting','Waha Analytics'], pos=['Director of Digital Transformation','Data Engineer','Enterprise Architect','Consultant','Sales Manager','Assistant Professor','HR Business Partner','Student','مدير إدارة البيانات','مستشار حوكمة','مهندس برمجيات','Head of Strategy'], mon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let r='Notes:\n"This is sample data"\n\nFirst Name,Last Name,URL,Email Address,Company,Position,Connected On\n'; let seed=7; const rnd=n=>{seed=(seed*9301+49297)%233280;return Math.floor(seed/233280*n)};
+  for(let i=0;i<420;i++){ const y=2016+Math.min(10,Math.floor(Math.sqrt(rnd(121)))); r+=`A,B,https://example.com,${rnd(9)===0?'x@example.com':''},${cos[rnd(cos.length)]},"${pos[rnd(pos.length)]}",${1+rnd(28)} ${mon[rnd(12)]} ${y}\n`; } return r; }
+$('csvDemo').addEventListener('click',()=>runNet(demoCSV(),'بيانات تجريبية مولّدة، وليست بيانات حقيقية'));
+
+runScam(); runPV(); runPost(); show(location.hash.slice(1));
+}
+</script>
+</body>
+</html>
